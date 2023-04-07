@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../../css/style.css">
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>Задача 3</h1>
+		<p> Об’єкт “Фірма” (використати члени-класи) <br>Поля<br>* назва фірми;<br>* дата заснування (рік, місяць);<br>* послуги (назва послуги, вартість, термін виконання);<br>* адреси філіалів (країна, місто, вулиця, номер будинку);<br>Методи<br>* визначення кількості років існування фірми;<br>* виведення всіх філіалів фірми у вказаному місті;<br>* виведення на екран послуг, що можуть бути виконані за вказану суму грошей та вказаний термін часу;</p>
+		<script>
+			//ВВодимо необхідні дані
+
+			class Offers{
+				#title
+				#price
+				#deadline
+				constructor(title,price,deadline){
+					this.Title = title
+					this.Price = price
+					this.Deadline = deadline
+				}
+				get Title(){
+					return this.#title
+				}
+				get Price(){
+					return this.#price
+				}
+				get Deadline(){
+					return this.#deadline
+				}
+
+				set Title(val){
+					if (val === '') throw new Error('Невірно вказане значення')
+					this.#title = val
+				}
+				set Price(val){
+					if (val<0) throw new Error('Невірно вказане значення')
+					this.#price = val
+				}
+				set Deadline(val){
+					if (val<0) throw new Error('Невірно вказане значення')
+					this.#deadline = val
+				}
+				toString(){
+					return `<p>${this.Title}, вартість: ${this.Price}, термін виконання:${this.Deadline} місяців</p>`}
+			}
+
+			class BranchsAdresses{
+				#city
+				#street
+				#buildNum
+				constructor(country = 'Україна',city,street,buildNum){
+					this.country = country
+					this.City = city
+					this.Street = street
+					this.BuildNum = buildNum
+				}
+				get City(){
+					return this.#city
+				}
+				get Street(){
+					return this.#street
+				}
+				get BuildNum(){
+					return this.#buildNum
+				}
+
+				set City(val){
+					if (val === '') throw new Error('Невірно вказане значення')
+					this.#city = val
+				}
+				set Street(val){
+					if (val === '') throw new Error('Невірно вказане значення')
+					this.#street = val
+				}
+				set BuildNum(val){
+					if (val === '') throw new Error('Невірно вказане значення')
+					this.#buildNum = val
+				}
+				toString(){
+					return `<p>Адреса відділення: ${this.country}, ${this.City}, ${this.Street}, ${this.BuildNum}</p>`
+				}
+			}
+
+			class Firm{
+				constructor(title,fundationYear,fundationMonth,offers,branchAdresses){
+					this.title = title
+					this.fundationYear = fundationYear
+					this.fundationMonth = fundationMonth
+					// this.offers = [
+					// 	new Offers('Футбольний м\'яч',400,1),
+					// 	new Offers('Бутси ',2000,3),
+					// 	new Offers('Форма',3700,2),
+					// 	new Offers('Манішки тренувальні',800,5)
+					// ]
+					// this.branchsAdresses = [
+					// 	new BranchsAdresses('Україна','м. Київ','М. Василенка','5'),
+					// 	new BranchsAdresses('Україна','м. Тернопіль','Тарнавського','12'),
+					// 	new BranchsAdresses('Україна','м. Херсон','Шевченка','32'),
+					// 	new BranchsAdresses('Україна','м. Львів','Шухевича','25')
+					// ]
+					this.offers = []
+					this.branchsAdresses = []
+				}
+
+				addOffer(offer){
+					this.offers.push(offer)
+				}
+				addBranchsAdresses(branchsAdresses){
+					this.branchsAdresses.push(branchsAdresses)
+				}
+				getFirmAge(currentYear){
+					let firmAge = currentYear - this.fundationYear
+					return firmAge
+				}
+				branchLocation(currentPlace){
+					for (const branch of this.branchsAdresses) {
+					if (branch.City === currentPlace ) document.write(`<p>${branch}</p>`)
+					}
+				}
+				possibleOffers(currentSum,currentDeadline){
+					for (const offer of this.offers) {
+						if (offer.Price<=currentSum && offer.Deadline<=currentDeadline) document.write(`<p>${offer}</p>`)
+					}
+				}
+
+				toString(){
+					return `<p>Назва: ${this.title}</p>
+					<p>Дата заснування: ${this.fundationMonth} місяць ${this.fundationYear} року</p>
+					<p>Послуги: ${this.offers}</p>
+					<p>Адреси філіалів: ${this.branchsAdresses}</p>`
+				}
+			}
+			//Виводимо результат
+			
+			let firm = new Firm('Фірма',2005,3)
+			
+			firm.addBranchsAdresses(new BranchsAdresses('Україна','Київ','М. Василенка','5'))
+			firm.addBranchsAdresses(new BranchsAdresses('Україна','Тернопіль', 'Тарнавського','12'))
+			firm.addBranchsAdresses(new BranchsAdresses('Україна','Херсон', 'Шевченка','32'))
+			firm.addBranchsAdresses(new BranchsAdresses('Україна','Львів','Шухевича','25'))
+			
+			firm.addOffer(new Offers('Футбольний м\'яч',400, 1))
+			firm.addOffer(new Offers('Бутси ',2000,3))
+			firm.addOffer(new Offers('Форма',3700,2))
+			firm.addOffer(new Offers('Манішки тренувальні',800,5))
+			
+			let firmAge = firm.getFirmAge(2023)
+			
+			document.write(firm)
+			document.write(`<p>Вік фірми: ${firmAge}</p>`)
+			let currentBranchLocation = firm.branchLocation('Київ')
+			let currentPossibleOffers = firm.possibleOffers(500,1)
+			
+			
+		</script>
+	</body>
+</html>

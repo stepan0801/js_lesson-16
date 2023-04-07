@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../../css/style.css">
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>Задача 2</h1>
+		<p>Створити клас TMoney для роботи з грошовими сумами. Сума повинна зберігатися у вигляді доларового еквіваленту. Реалізувати методи додавання/вилучення грошової маси, вказуючи необхідну суму у гривнях, та визначення курсу долара, при якому сума у гривнях збільшиться на 100. Курс долара зберігати в окремому полі.</p>
+		<script>
+			//ВВодимо необхідні дані
+			class TMoney {
+				#usdSumMoney = 0
+				
+				constructor(usdSumMoney,usdRateToGrn = 36.6){
+					this.UsdSumMoney = usdSumMoney
+					this.usdRateToGrn = usdRateToGrn
+					
+				}
+				get UsdSumMoney(){
+					return this.#usdSumMoney
+				}
+				
+
+				set UsdSumMoney(val) {
+					if (val<0) throw new Error('Немає стілки коштів на рахунку')
+					this.#usdSumMoney = val
+				}
+				 IncreaseMoneyToAccount(val){
+					if (val<0) throw new Error('Невірно введено суму поповненя')
+					this.#usdSumMoney = this.#usdSumMoney + Math.round(val/this.usdRateToGrn*100)/100
+				}
+				 DecreaseMoneyFromAccount(val){
+					if ((this.#usdSumMoney-val/this.usdRateToGrn)<0) throw new Error('Невірно введено суму зняття')
+					this.#usdSumMoney = Math.round((this.#usdSumMoney- val/this.usdRateToGrn)*100)/100
+				}
+
+				getSearchUsdRate(val){
+					let searchUsdRate
+					if (val<0) throw new Error('Error')
+					searchUsdRate = Math.round((val+100)*this.usdRateToGrn/val*100)/100
+					return searchUsdRate
+				}
+
+				toString(){
+				return	`<p>Баланс:${this.UsdSumMoney}$</p>`
+				}
+			}
+
+			//Виводимо результ
+			let tmoney = new TMoney(1000)
+			document.write(tmoney)
+			tmoney.IncreaseMoneyToAccount(42000)
+			document.write(tmoney)
+			tmoney.DecreaseMoneyFromAccount(65000)
+			document.write(tmoney)
+			let newUsdRateToGrn = tmoney.getSearchUsdRate(65000)
+			document.write(`<p>Новий курс Долара:${newUsdRateToGrn}</p>`)
+			
+		</script>
+	</body>
+</html>

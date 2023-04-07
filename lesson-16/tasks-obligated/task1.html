@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../../css/style.css">
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>Задача 1</h1>
+		<p>Створити клас TDate для роботи із датами у форматі “день.місяць.рік”. Дата представляється структурою із трьома полями. Реалізувати методи збільшення/зменшення дати на певну кількість днів, місяців чи років. Введення та виведення дати реалізувати за допомогою методу toString.</p>
+		<script>
+			// Вводимо необхідні дані для створення масиву з даними
+			class TDate {
+				constructor(day,month,year){
+					this.day = day
+					this.month = month
+					this.year = year
+				}
+				increaseYear(val){
+					this.year += val
+				}
+
+				decreaseYear(val){
+					this.year -= val
+				}
+
+				increaseMonth(val){
+					this.month += val
+					this.increaseYear(Math.floor(this.month/12))
+					this.month = this.month%12
+				}
+
+				decreaseMonth(val){
+					let tempMoth = this.month -= val
+					if (tempMoth<1) {
+						this.decreaseYear(Math.ceil(Math.abs(this.month/12)))
+						this.month = 12 -  Math.abs(this.month%12)
+					} else this.month = tempMoth
+					// this.decreaseYear(Math.ceil(Math.abs(this.month/12)))
+					// this.month = 12 - Math.abs(this.month%12)
+				}
+				
+				increaseDay(val){
+					this.day += val
+					this.increaseMonth(Math.floor(this.day/30))
+					this.day = this.day%30
+				}
+
+				decreaseDay(val){
+					let tempDay = this.day -= val
+					if (tempDay<1) {
+						this.decreaseMonth(Math.ceil(Math.abs(this.day/30)))
+						this.decreaseYear(Math.ceil(Math.abs(this.day/365)))
+						this.day = 30 - Math.abs(this.day%30)
+					} else this.day = tempDay
+					// this.decreaseMonth(Math.ceil(Math.abs(this.day/30)))
+					// this.day = 30-Math.abs(this.day%30)
+				}
+
+				toString(){
+					return `<p>Поточна дата: ${this.day}.${this.month}.${this.year}</p>`
+				}
+			}
+			
+			//Робимо обчислення та виводимо результат
+			const tdate = new TDate(3,4,2023)
+			document.write(tdate)
+			tdate.increaseDay(15)
+			document.write(tdate)
+			tdate.decreaseDay(25)
+			document.write(tdate)
+			tdate.increaseMonth(16)
+			document.write(tdate)
+			tdate.decreaseMonth(8)
+			document.write(tdate)
+			tdate.increaseYear(15)
+			tdate.decreaseYear(4)
+			document.write(tdate)
+			
+		</script>
+	</body>
+</html>

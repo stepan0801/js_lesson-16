@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../../css/style.css">
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>Задача 4</h1>
+		<p>Створити клас TBankomat, який моделює роботу банкомата. Клас повинен містити поля для зберігання кількості купюр кожного із номіналів від 5 до 200 гривень. Реалізувати методи знаходження максимальної та мінімальної сум, які може видати банкомат, та метод зняття деякої суми.</p>
+		<script>
+			//ВВодимо необхідні дані
+			class TBankomat{
+				constructor(){
+					this.banknotes = {5:0,10:0,20:0,50:0,100:0,200:0}
+				}
+
+				getMaxSumAtmValid(){
+					let sum = 0
+					for (let value in this.banknotes) {
+						sum = sum + parseInt(value)*this.banknotes[value]
+					}
+					return sum
+				}
+
+				getMinSumAtmValid(){
+					let sum = 0
+					for (let value in this.banknotes) {
+						if (this.banknotes[value]>0) {
+							sum = sum + parseInt(value)
+							break
+						}
+					}
+					return sum
+				}
+
+				getMoneyFromAtm(cash){
+					let rest
+					if (cash<=this.getMaxSumAtmValid()) 
+						rest = this.getMaxSumAtmValid() - cash
+						else alert('Error')
+						return rest
+				}
+
+				toString(){
+					let start = ''
+					for (const value in this.banknotes) {
+						start = start + `<p>Банкнот номіналом ${value} грн.: ${this.banknotes[value]} шт.</p>`
+					}
+					return start
+				}
+			}
+
+			//Виводимо результ
+			let tBankomat = new TBankomat()
+			tBankomat.banknotes[5] = 15
+			tBankomat.banknotes[10] = 35
+			tBankomat.banknotes[20] = 23
+			tBankomat.banknotes[50] = 43
+			tBankomat.banknotes[100] = 14
+			tBankomat.banknotes[200] = 54
+			document.write(`${tBankomat.toString()}`)
+			document.write(`<p>Максимально-доступна сума: ${tBankomat.getMaxSumAtmValid()}</p>`)
+			document.write(`<p>Мінімально-доступна сума: ${tBankomat.getMinSumAtmValid()}</p>`)
+			let cashGet = parseInt(prompt('введіть суму готівки, яку бажаєте зняти'))
+			document.write(`<p>Після видачі ${cashGet} грн. баланс: ${tBankomat.getMoneyFromAtm(cashGet)}</p>`)
+
+			
+			
+		</script>
+	</body>
+</html>
